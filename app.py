@@ -316,5 +316,7 @@ def download_report():
         return f"Layout Error: {str(e)}"
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 8000))
+    # Ye line Render se dynamic port uthayegi
+    port = int(os.environ.get("PORT", 5000))
+    # host='0.0.0.0' hona zaroori hai taaki bahar se access mil sake
     app.run(host='0.0.0.0', port=port)
