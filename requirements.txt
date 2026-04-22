@@ -1,5 +1,6 @@
-streamlit
+Flask
 pandas
+numpy
 scikit-learn
 joblib
-flask
+fpdf
