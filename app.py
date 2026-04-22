@@ -315,6 +315,8 @@ def download_report():
     except Exception as e:
         return f"Layout Error: {str(e)}"
 
+
 if __name__ == '__main__':
-    # 5000 ki jagah 8080 ya koi aur number daal dein
-    app.run(debug=True, port=8080)
+    # Cloud platforms port ko environment variable se uthate hain
+    port = int(os.environ.get("PORT", 8080)) 
+    app.run(host='0.0.0.0', port=port)
