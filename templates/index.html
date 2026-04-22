@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedVision | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Variables */
+        :root {
+            --primary-blue: #2c3e50;
+            --accent-blue: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        body {
+            animation: fadeInAnimation ease 0.5s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+
+        }
+        @keyframes fadeInAnimation {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+        }
+        /* Navbar (Same as Predictor Page) */
+        .navbar {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        /* Hero Section */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn-predict {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-predict:hover {
+            background-color: #2980b9;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+   <nav class="navbar">
+    <div class="logo"><a href="/">💖MedVision</a></div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/predictor">Predictor</a></li>
+        <li><a href="/history">History</a></li>
+        <li><a href="/about">About</a></li>
+        <li><button id="theme-toggle" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem;">🌙</button></li>
+    </ul>
+</nav>
+
+    <div class="container" id="home-container">
+    <section class="hero premium-hero" style="text-align: center;">
+    <h1>Smart Heart Health Monitoring</h1>
+    <p>Using Advanced Machine Learning to predict cardiovascular risks based on clinical data.</p>
+
+    <a href="/predictor" class="btn-predict">Start Assessment Now</a>
+</section>
+
+    <section class="features-grid">
+   <section class="features-grid">
+    <div class="feature-card premium-feature">
+        <i class="fas fa-microchip" style="font-size: 2.5rem; color: #3498db; margin-bottom: 15px;"></i>
+        <h3>AI-Powered</h3>
+        <p>Trained on thousands of clinical records for high accuracy.</p>
+    </div>
+    </section>
+    <div class="feature-card premium-feature">
+        <i class="fas fa-bolt"></i> <h3>Instant Results</h3>
+        <p>Get your health risk assessment in less than a second.</p>
+    </div>
+    <div class="feature-card premium-feature">
+        <i class="fas fa-database"></i> <h3>Data Driven</h3>
+        <p>Based on parameters like BP, Cholesterol, and Heart Rate.</p>
+    </div>
+</section>
+</div>
+    <section style="display: flex; justify-content: space-around; text-align: center; margin: 60px 0; color: var(--primary-blue);">
+            <div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 5px;">95%</h2>
+                <p style="color: #666;">Model Accuracy</p>
+            </div>
+            <div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 5px;">10k+</h2>
+                <p style="color: #666;">Data Points</p>
+            </div>
+            <div>
+                <h2 style="font-size: 2.5rem; margin-bottom: 5px;">&lt; 1s</h2>
+                <p style="color: #666;">Response Time</p>
+            </div>
+        </section>
+    <footer style="text-align: center; margin-top: 40px; color: #7f8c8d;">
+        <p>&copy; 2026 💖MedVision Project</p>
+    </footer>
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Pehle se save ki gayi preference check karo
+    if (localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+            themeToggle.textContent = '☀️';
+        } else {
+            localStorage.setItem('theme', 'light');
+            themeToggle.textContent = '🌙';
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+id,unnamed: 0,age,sex,chestpaintype,restingbp,cholesterol,fastingbs,restingecg,maxhr,exerciseangina,oldpeak,st_slope,prediction lr,sex_n,cp_n,ecg_n,angina_n,slope_n,risk_score,result
+1,0,40,1,0,140,289,0,0,172,0,0,0,0,1,0,0,0,0,8.0,Low Risk
+2,1,49,0,1,160,180,0,0,156,1,1,3,1,0,1,0,1,2,50.0,High Risk

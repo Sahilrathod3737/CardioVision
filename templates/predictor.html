@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Heart Disease Predictor | Python Powered</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+
+        /* Page load hote hi fade-in effect */
+        body {
+            animation: fadeInAnimation ease 0.5s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeInAnimation {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        /* --- Dark Mode Variables & Rules --- */
+        body.dark-mode { background-color: #121212; color: #e0e0e0; }
+        .dark-mode .navbar { background-color: #1f1f1f; border-bottom: 1px solid #333; }
+        .dark-mode .prediction-card, .dark-mode .result-section, .dark-mode .advice-card {
+            background-color: #1e1e1e !important; color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .dark-mode input, .dark-mode select { background-color: #2c2c2c; color: white; border: 1px solid #444; }
+        .dark-mode label { color: #bbb; }
+
+        .chart-wrapper { width: 280px; height: 160px; margin: 0 auto; position: relative; }
+        #loader-container {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); z-index: 9999; flex-direction: column;
+            justify-content: center; align-items: center; color: white;
+        }
+        .heart-pulse { font-size: 50px; color: #e74c3c; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        .tooltip { position: relative; cursor: pointer; color: #3498db; }
+        .tooltip .tooltiptext {
+            visibility: hidden; width: 200px; background-color: #333; color: #fff; text-align: center;
+            border-radius: 6px; padding: 10px; position: absolute; z-index: 1; bottom: 125%;
+            left: 50%; margin-left: -100px; opacity: 0; transition: opacity 0.3s; font-size: 0.8rem;
+        }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="{% if request.cookies.get('theme') == 'dark' %}dark-mode{% endif %}">
+
+    <div id="loader-container">
+        <div class="heart-pulse">❤️</div>
+        <div class="loading-text">Analyzing Heart Data...</div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo"><a href="/">💖MedVision</a></div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/predictor">Predictor</a></li>
+            <li><a href="/history">History</a></li>
+            <li><a href="/about">About</a></li>
+            <li><button id="theme-toggle" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem;">🌙</button></li>
+        </ul>
+    </nav>
+       <div class="container">
+    <div class="tabs-wrapper" style="text-align: center; margin-bottom: 30px;">
+        <div class="tab-box" style="display: inline-flex; background: #161b22; padding: 5px; border-radius: 12px; border: 1px solid #30363d;">
+            <button class="tab-btn active" onclick="openTab(event, 'single')">Single Assessment</button>
+            <button class="tab-btn" onclick="openTab(event, 'bulk')">Bulk CSV Upload</button>
+</div>
+</div>
+
+
+   <div id="bulk" class="tab-content" style="display: none;">
+    <div class="prediction-card batch-card">
+        <h2>Batch Analysis</h2>
+        <p class="batch-subtitle">Upload a CSV with medical headers to analyze multiple records at once.</p>
+
+        <form action="/predict_bulk" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="file-drop-area">
+                <label for="bulk-file" class="drop-zone-label">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-csv"></i>
+                    </div>
+                    <span id="file-label-text">Drag & drop your CSV or click to browse</span>
+                    <p class="file-limit">Max file size: 5MB</p>
+                    <input type="file" id="bulk-file" name="file" accept=".csv" required onchange="updateFileName()">
+                </label>
+            </div>
+            <button type="submit" class="btn-predict glow-button">
+                <i class="fas fa-bolt"></i> Run Bulk Prediction
+            </button>
+        </form>
+    </div>
+</div>
+
+
+           <div id="single" class="tab-content" class="repid">
+                <div class="prediction-card">
+            <h1>Advanced Health Assessment</h1>
+
+            <form action="/predictor" method="POST" id="predictForm">
+                <div class="input-grid">
+                    <div class="field">
+                        <label>Age</label>
+                        <input type="number" name="age" placeholder="e.g. 45" min="1" max="120" required>
+                    </div>
+                    <div class="field">
+                        <label>Sex</label>
+                        <select name="sex"><option value="1">Male</option><option value="0">Female</option></select>
+                    </div>
+                   <div class="field">
+                    <label>Resting BP (mm Hg)</label>
+                    <input type="number" name="trestbps" placeholder="e.g. 120" min="50" max="250" required>
+                    </div>
+                    <div class="field">
+                        <label>Cholesterol (mg/dl)</label>
+                        <input type="number" name="chol" placeholder="e.g. 200" min="100" max="600" required>
+                    </div>
+                    <div class="field">
+                        <label>Chest Pain Type <span class="tooltip">ⓘ<span class="tooltiptext">Typical: Heart-related. Atypical: Non-heart related.</span></span></label>
+                        <select name="cp">
+                            <option value="0">Typical Angina</option><option value="1">Atypical Angina</option>
+                            <option value="2">Non-anginal Pain</option><option value="3">Asymptomatic</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Fasting Blood Sugar > 120mg/dl</label>
+                        <select name="fbs"><option value="0">No (Normal)</option><option value="1">Yes (High)</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Resting ECG Results</label>
+                        <select name="restecg">
+                            <option value="0">Normal</option><option value="1">ST-T Wave Abnormality</option><option value="2">Left Ventricular Hypertrophy</option>
+                        </select>
+                    </div>
+                   <div class="field">
+                        <label>Max Heart Rate Achieved</label>
+                        <input type="number" name="thalach" placeholder="e.g. 150" min="60" max="220" required>
+                    </div>
+                    <div class="field"><label>Oldpeak (ST Depression)</label><input type="number" step="0.1" name="oldpeak" placeholder="e.g. 1.5" required></div>
+                    <div class="field">
+                        <label>ST Slope</label>
+                        <select name="slope"><option value="0">Up-sloping</option><option value="1">Flat</option><option value="2">Down-sloping</option></select>
+                    </div>
+                    <div class="field">
+                        <label>Exercise Induced Angina</label>
+                        <select name="exang"><option value="0">No</option><option value="1">Yes</option></select>
+                    </div>
+                </div>
+                <button type="submit" class="btn-predict">Analyze Health Data</button>
+            </form>
+
+            {% if result %}
+            <div id="result-area" class="result-section">
+    <div class="result-header">
+        <h2>Clinical Analysis Report</h2>
+        <div class="result-divider"></div>
+    </div>
+
+    <div class="main-risk-container">
+        <div class="chart-wrapper doughnut-container">
+            <canvas id="riskChart"></canvas>
+            <div class="chart-label">
+                <span class="score-num">{{ result.score }}%</span>
+                <span class="score-text">Risk Level</span>
+            </div>
+        </div>
+
+        <div class="result-box-premium {{ result.css_class }}">
+            <i class="fas fa-heartbeat"></i>
+            <span>Status: {{ result.status }}</span>
+        </div>
+    </div>
+
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Vital Metrics Comparison</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>Risk Factor Analysis</h3>
+            <canvas id="radarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="premium-advice-card">
+        <div class="advice-header">
+            <i class="fas fa-lightbulb"></i>
+            <strong>Medical Recommendation</strong>
+        </div>
+        <p>{{ result.advice }}</p>
+    </div>
+
+    <div class="action-footer">
+        <button type="button" onclick="downloadPDF()" class="btn-download-premium">
+            <i class="fas fa-file-pdf"></i> Download Digital Health Report
+        </button>
+    </div>
+</div>
+
+                <form id="pdfForm" action="/download_report" method="POST" style="display:none;">
+                        <input type="hidden" name="score" value="{{ result.score }}">
+                        <input type="hidden" name="status" value="{{ result.status }}">
+                        <input type="hidden" name="advice" value="{{ result.advice }}">
+
+                        <input type="hidden" name="age" value="{{ request.form.age }}">
+                        <input type="hidden" name="sex" value="{{ request.form.sex }}">
+                        <input type="hidden" name="cp" value="{{ request.form.cp }}">
+                        <input type="hidden" name="trestbps" value="{{ request.form.trestbps }}">
+                        <input type="hidden" name="chol" value="{{ request.form.chol }}">
+                        <input type="hidden" name="fbs" value="{{ request.form.fbs }}">
+                        <input type="hidden" name="restecg" value="{{ request.form.restecg }}">
+                        <input type="hidden" name="thalach" value="{{ request.form.thalach }}">
+                        <input type="hidden" name="exang" value="{{ request.form.exang }}">
+                        <input type="hidden" name="oldpeak" value="{{ request.form.oldpeak }}">
+                        <input type="hidden" name="slope" value="{{ request.form.slope }}">
+
+                        <input type="hidden" name="bar_chart_img" id="pdfBarChart">
+                        <input type="hidden" name="radar_chart_img" id="pdfRadarChart">
+            </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // --- 1. Theme Toggle Logic ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        function updateFileName() {
+    const fileInput = document.getElementById('bulk-file');
+    const labelText = document.getElementById('file-label-text');
+    const uploadIcon = document.querySelector('.upload-icon i');
+
+    if (fileInput.files.length > 0) {
+        // Filename dikhao aur color change karo
+        labelText.innerHTML = `File Selected: <span style="color: #2ecc71;">${fileInput.files[0].name}</span>`;
+        uploadIcon.style.color = "#2ecc71";
+        uploadIcon.className = "fas fa-check-circle"; // Icon badal kar checkmark kar do
+    }
+}
+
+        // --- 2. Tab Switching Logic (Home/Bulk Tabs) ---
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // --- 3. Form Validation & Loader ---
+        document.getElementById('predictForm').onsubmit = function(e) {
+            const age = document.getElementsByName('age')[0].value;
+            const bp = document.getElementsByName('trestbps')[0].value;
+
+            if (age < 1 || age > 120) {
+                alert("Please enter a valid age between 1 and 120.");
+                e.preventDefault();
+                return false;
+            }
+            if (bp < 50 || bp > 250) {
+                alert("Resting BP should be between 50 and 250 mmHg.");
+                e.preventDefault();
+                return false;
+            }
+            document.getElementById('loader-container').style.display = 'flex';
+        };
+
+        // --- 4. Charts & PDF Logic (Sirf tab chalega jab result ho) ---
+        {% if result %}
+            const userVals = {{ user_data | tojson }};
+            const refVals = {{ ref_data | tojson }};
+            const score = {{ result.score }};
+
+            // Doughnut Chart
+            const riskChart = new Chart(document.getElementById('riskChart'), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [score, 100 - score],
+                        backgroundColor: [score > 50 ? '#e74c3c' : '#2ecc71', '#eeeeee'],
+                        circumference: 180, rotation: 270, cutout: '80%'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Bar Chart
+            const barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Age', 'BP', 'Chol', 'MaxHR', 'StDep'],
+                    datasets: [
+                        { label: 'Patient', data: userVals, backgroundColor: '#3498db' },
+                        { label: 'Normal', data: refVals, backgroundColor: '#2ecc71' }
+                    ]
+                }
+            });
+
+            // Radar Chart
+            const radarChart = new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Age', 'BP', 'Chol', 'HR', 'Exercise'],
+                    datasets: [{
+                        label: 'Risk Distribution',
+                        data: [userVals[0]/1, userVals[1]/2, userVals[2]/3, userVals[3]/2, 50],
+                        backgroundColor: 'rgba(52, 152, 219, 0.4)', borderColor: '#3498db'
+                    }]
+                }
+            });
+
+            // PDF Download Function
+            function downloadPDF() {
+                document.getElementById('pdfBarChart').value = barChart.toBase64Image();
+                document.getElementById('pdfRadarChart').value = radarChart.toBase64Image();
+                document.getElementById('pdfForm').submit();
+            }
+
+            // Scroll to results
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        {% endif %}
+
+
+    </script>
+</body>
+</html>
+
+
+</body>
+</html>

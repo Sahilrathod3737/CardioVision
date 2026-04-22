@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bulk Prediction Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body id="predict-page"> <div class="container">
+    <nav class="navbar">
+        <div class="logo"><a href="/">💖MedVision</a></div>
+    </nav>
+
+             <div class="results-container">
+            <div class="table-wrapper">
+                {% for table in tables %}
+                    {{ table|safe }}
+                {% endfor %}
+            </div>
+        </div>
+        
+      <div class="action-footer">
+    <a href="{{ url_for('static', filename='bulk_results.csv') }}" class="btn-predict" download>
+        <i class="fas fa-download"></i> Download CSV
+    </a>
+
+    <a href="/predictor" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Predictor
+    </a>
+</div>
+
+     <script>
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+
+</body>
+</html>
+
+
+
