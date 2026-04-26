@@ -1411,3 +1411,60 @@ body.dark-mode .btn-back:hover {
         display: flex !important;
     }
 }
+
+/* Tooltip Icon */
+.info-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: #00e5ff;
+    color: #000;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 5px;
+    position: relative;
+    line-height: 16px;
+}
+
+/* Tooltip Text (Hidden) */
+.tooltip-text {
+    visibility: hidden;
+    width: 220px;
+    background-color: #1a1a1a;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 99;
+    bottom: 125%; 
+    left: 50%;
+    margin-left: -110px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: 1px solid #00e5ff;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Tooltip Arrow */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #00e5ff transparent transparent transparent;
+}
+
+/* Show Tooltip on Hover */
+.info-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
