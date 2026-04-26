@@ -1195,6 +1195,7 @@ body.dark-mode .btn-back:hover {
 /* style.css */
 
 .about-section {
+    margin-bottom: 60px;
     background: radial-gradient(circle, #0a0e17 0%, #030509 100%); /* Deep Navy theme background */
     color: #e0f2f1; /* Soft contrast text */
     padding: 80px 0;
