@@ -590,7 +590,7 @@ input:focus, select:focus {
 .prediction-card {
     width: 80%;      /* Screen ki 60% width lega */
     margin: 40px auto; /* Upar-niche gap aur left-right se center */
-    min-width: 320px;  /* Taaki mobile par zyada chhota na ho jaye */
+    min-width: 280px;  /* Taaki mobile par zyada chhota na ho jaye */
 }
 
 .tabs-wrapper {
@@ -741,7 +741,7 @@ body.dark-mode .premium-feature {
 .btn-predict {
     display: inline-block; /* Poori width lene se rokega */
     width: auto !important; /* Auto width taaki sirf text jitni jagah le */
-    min-width: 250px; /* Ek standard button size dene ke liye */
+    min-width: 200px; /* Ek standard button size dene ke liye */
     padding: 16px 40px !important; /* Thoda padding badhake bada feel dene ke liye */
     margin: 20px auto; /* Center mein rakhne ke liye */
     background: linear-gradient(135deg, #3498db, #2ecc71) !important;
@@ -1189,4 +1189,224 @@ body.dark-mode .btn-back {
 body.dark-mode .btn-back:hover {
     color: #58a6ff;
     border-color: #58a6ff;
+}
+
+
+/* style.css */
+
+.about-section {
+    background: radial-gradient(circle, #0a0e17 0%, #030509 100%); /* Deep Navy theme background */
+    color: #e0f2f1; /* Soft contrast text */
+    padding: 80px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.about-text h2 {
+    color: #00e5ff; /* Neon Cyan accent for heading */
+    font-size: 32px;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2); /* Glow effect from Neon Cyan */
+}
+
+/* Glassmorphism card for about text - Optional, adds professionalism */
+.about-text {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03); /* Lighter texture for card */
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px); /* Glassmorphism blur */
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Soft border for professional finish */
+}
+
+.learn-more-btn {
+    background-color: #00e5ff; /* Neon Cyan button */
+    color: #030509;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column; /* Mobile par stack ho jayega */
+        text-align: center;
+    }
+    .about-image img {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* Mobile view ke liye (Max width 768px) */
+@media (max-width: 768px) {
+    .step-container { /* Iska naam aapki class ke hisaab se rakhein */
+        display: flex;
+        flex-direction: column; /* Cards ko stack karne ke liye */
+        align-items: center;
+        gap: 20px;
+    }
+
+    .step-box { /* Jo aapke numbered cards hain */
+        width: 90%; /* Mobile par poori width le lenge */
+        margin: 10px 0;
+    }
+}
+
+
+/* Hero Section Layout */
+.premium-hero {
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Heading Adjustment */
+.premium-hero h1 {
+    font-size: 2.5rem; /* Desktop size */
+    margin-bottom: 20px;
+    color: #00e5ff; /* Neon Cyan */
+    word-wrap: break-word;
+    line-height: 1.2;
+}
+
+/* Paragraph for better readability */
+.premium-hero p {
+    font-size: 1.1rem;
+    max-width: 600px; /* Lamba text failne se rokega */
+    margin: 0 auto 30px auto;
+    color: #e0f2f1;
+}
+
+/* Button Styling */
+.btn-predict {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #00e5ff, #00b8d4);
+    color: #030509;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 229, 255, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.btn-predict:hover {
+    transform: scale(1.05);
+}
+
+/* --- MOBILE RESPONSIVENESS (Main Fix) --- */
+/* Mobile view ke liye (320px - 480px) */
+/* Mobile view fix (320px screens) */
+@media (max-width: 480px) {
+    
+    #home-container {
+        /* Pura container upar se thoda niche push karo */
+        padding-top: 100px !important; 
+    }
+
+    .premium-hero {
+        /* Header aur Content ke beech mein saans lene ki jagah */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 70vh; /* Screen ka 70% area cover karega */
+        padding: 40px 10px;
+        overflow: visible !important;
+    }
+
+    .premium-hero h1 {
+        /* Font thoda aur chhota taaki width mein fit ho jaye */
+        font-size: 1.6rem !important;
+        line-height: 1.3;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+}
+
+
+
+
+
+@media (max-width: 480px) {
+    #prediction-card {
+        width: 55%;   /* Side mein thodi space chhodega */
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    #prediction-card h2 {
+        font-size: 1.4rem;
+        text-align: center; /* Mobile par center heading achhi lagti hai */
+    }
+}
+
+/* Navbar Basic Styling */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+/* Hamburger Icon styling (Hidden by default) */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.bar {
+    width: 25px;
+    height: 3px;
+    background-color: #00e5ff; /* Aapka Neon Cyan color */
+    border-radius: 5px;
+}
+
+/* --- MOBILE RESPONSIVE LOGIC --- */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Mobile par 3 lines dikhengi */
+    }
+
+    .nav-links {
+        display: none !important; /* Default mein links gayab */
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: #0a0e17; /* Dark theme match */
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 2px solid #00e5ff;
+        z-index: 100;
+    }
+
+    /* Jab menu 'active' ho tab links dikhayein */
+    .nav-links.active {
+        display: flex !important;
+    }
 }
