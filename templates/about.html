@@ -157,15 +157,19 @@
 <body>
 
     <nav class="navbar">
-    <div class="logo"><a href="/">💖MedVision</a></div>
-    <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/predictor">Predictor</a></li>
-        <li><a href="/history">History</a></li>
-        <li><a href="/about">About</a></li>
-        <li><button id="theme-toggle" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem;">🌙</button></li>
-    </ul>
-</nav>
+        <div class="logo" class="nav-container"><a href="/">💖MedVision</a></div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/predictor">Predictor</a></li>
+            <li><a href="/history">History</a></li> <li><a href="/about">About</a></li>
+            <li><button id="theme-toggle" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.2rem;">🌙</button></li>
+        </ul>
+    </nav>
 
     <div class="container">
         <header style="text-align: center; margin-bottom: 40px;">
@@ -194,6 +198,21 @@
                 </div>
             </div>
         </section>
+
+        <section id="about" class="about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About Medivision</h2>
+                <p>Our 'Medvision - AI Project' is a modern technique designed for the early detection of heart diseases using AI and Machine Learning. This system has been developed through the integration of professional IT engineering expertise and medical data.</p>
+                <button class="learn-more-btn">Know More</button>
+            </div>
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='heart_concept.png') }}" alt="Medvision Heart AI Concept">
+            </div>
+        </div>
+    </div>
+</section>
 
         <section class="about-card">
             <h2><i class="fas fa-database"></i> Built with UCI Dataset</h2>
@@ -231,6 +250,17 @@
             localStorage.setItem('theme', 'light');
             themeToggle.textContent = '🌙';
         }
+    });
+</script>
+<script>
+    const menu = document.querySelector('#mobile-menu');
+    const menuLinks = document.querySelector('.nav-links');
+
+    menu.addEventListener('click', function() {
+        menuLinks.classList.toggle('active');
+        
+        // Optional: Icon ko 'X' banane ke liye animation (agar aap chahein)
+        menu.classList.toggle('is-active');
     });
 </script>
 </body>
