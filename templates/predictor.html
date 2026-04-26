@@ -105,58 +105,124 @@
                 <div class="prediction-card">
             <h1>Advanced Health Assessment</h1>
 
-            <form action="/predictor" method="POST" id="predictForm">
-                <div class="input-grid">
-                    <div class="field">
-                        <label>Age</label>
-                        <input type="number" name="age" placeholder="e.g. 45" min="1" max="120" required>
-                    </div>
-                    <div class="field">
-                        <label>Sex</label>
-                        <select name="sex"><option value="1">Male</option><option value="0">Female</option></select>
-                    </div>
-                   <div class="field">
-                    <label>Resting BP (mm Hg)</label>
-                    <input type="number" name="trestbps" placeholder="e.g. 120" min="50" max="250" required>
-                    </div>
-                    <div class="field">
-                        <label>Cholesterol (mg/dl)</label>
-                        <input type="number" name="chol" placeholder="e.g. 200" min="100" max="600" required>
-                    </div>
-                    <div class="field">
-                        <label>Chest Pain Type <span class="tooltip">ⓘ<span class="tooltiptext">Typical: Heart-related. Atypical: Non-heart related.</span></span></label>
-                        <select name="cp">
-                            <option value="0">Typical Angina</option><option value="1">Atypical Angina</option>
-                            <option value="2">Non-anginal Pain</option><option value="3">Asymptomatic</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Fasting Blood Sugar > 120mg/dl</label>
-                        <select name="fbs"><option value="0">No (Normal)</option><option value="1">Yes (High)</option></select>
-                    </div>
-                    <div class="field">
-                        <label>Resting ECG Results</label>
-                        <select name="restecg">
-                            <option value="0">Normal</option><option value="1">ST-T Wave Abnormality</option><option value="2">Left Ventricular Hypertrophy</option>
-                        </select>
-                    </div>
-                   <div class="field">
-                        <label>Max Heart Rate Achieved</label>
-                        <input type="number" name="thalach" placeholder="e.g. 150" min="60" max="220" required>
-                    </div>
-                    <div class="field"><label>Oldpeak (ST Depression)</label><input type="number" step="0.1" name="oldpeak" placeholder="e.g. 1.5" required></div>
-                    <div class="field">
-                        <label>ST Slope</label>
-                        <select name="slope"><option value="0">Up-sloping</option><option value="1">Flat</option><option value="2">Down-sloping</option></select>
-                    </div>
-                    <div class="field">
-                        <label>Exercise Induced Angina</label>
-                        <select name="exang"><option value="0">No</option><option value="1">Yes</option></select>
-                    </div>
-                </div>
-                <button type="submit" class="btn-predict">Analyze Health Data</button>
-            </form>
+           <form action="/predictor" method="POST" id="predictForm">
+    <div class="input-grid">
+        <div class="field">
+            <label>Age</label>
+            <input type="number" name="age" placeholder="e.g. 45" min="1" max="120" required>
+        </div>
 
+        <div class="field">
+            <label>Sex</label>
+            <select name="sex">
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Resting BP (mm Hg)</label>
+            <input type="number" name="trestbps" placeholder="e.g. 120" min="50" max="250" required>
+        </div>
+
+        <div class="field">
+            <label>Cholesterol (mg/dl)</label>
+            <input type="number" name="chol" placeholder="e.g. 200" min="100" max="600" required>
+        </div>
+
+        <div class="field">
+            <label>Chest Pain Type 
+                <span class="info-icon">?
+                    <span class="tooltip-text">
+                        <b>TA:</b> Typical Angina (Heart-related)<br>
+                        <b>ATA:</b> Atypical Angina (Non-heart related)<br>
+                        <b>NAP:</b> Non-Anginal Pain<br>
+                        <b>ASY:</b> Asymptomatic (No pain)
+                    </span>
+                </span>
+            </label>
+            <select name="cp">
+                <option value="0">Typical Angina</option>
+                <option value="1">Atypical Angina</option>
+                <option value="2">Non-anginal Pain</option>
+                <option value="3">Asymptomatic</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Fasting Blood Sugar > 120mg/dl</label>
+            <select name="fbs">
+                <option value="0">No (Normal)</option>
+                <option value="1">Yes (High)</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Resting ECG Results
+                <span class="info-icon">?
+                    <span class="tooltip-text">
+                        <b>Normal:</b> Normal results<br>
+                        <b>ST:</b> ST-T wave abnormality<br>
+                        <b>LVH:</b> Left Ventricular Hypertrophy
+                    </span>
+                </span>
+            </label>
+            <select name="restecg">
+                <option value="0">Normal</option>
+                <option value="1">ST-T Wave Abnormality</option>
+                <option value="2">Left Ventricular Hypertrophy</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Max Heart Rate Achieved</label>
+            <input type="number" name="thalach" placeholder="e.g. 150" min="60" max="220" required>
+        </div>
+
+        <div class="field">
+            <label>Oldpeak (ST Depression)
+                <span class="info-icon">?
+                    <span class="tooltip-text">
+                        Exercise induced ST depression relative to rest. Measures heart stress during activity.
+                    </span>
+                </span>
+            </label>
+            <input type="number" step="0.1" name="oldpeak" placeholder="e.g. 1.5" required>
+        </div>
+
+        <div class="field">
+            <label>ST Slope
+                <span class="info-icon">?
+                    <span class="tooltip-text">
+                        <b>Up:</b> Increasing rate<br>
+                        <b>Flat:</b> Normal response<br>
+                        <b>Down:</b> Abnormal response (Risk)
+                    </span>
+                </span>
+            </label>
+            <select name="slope">
+                <option value="0">Up-sloping</option>
+                <option value="1">Flat</option>
+                <option value="2">Down-sloping</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Exercise Induced Angina
+                <span class="info-icon">?
+                    <span class="tooltip-text">
+                        Does physical activity trigger chest pain? (Yes or No)
+                    </span>
+                </span>
+            </label>
+            <select name="exang">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn-predict">Analyze Health Data</button>
+</form>
             {% if result %}
             <div id="result-area" class="result-section">
     <div class="result-header">
